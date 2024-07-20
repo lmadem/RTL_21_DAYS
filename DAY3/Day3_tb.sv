@@ -15,7 +15,7 @@ module day3_tb();
   initial clk = 0;
   always #5 clk = ~clk;
   
-  initial 
+  task testcase1;
     begin
       reset <= 1'b1;
       a_i <= 1'b1;
@@ -27,7 +27,34 @@ module day3_tb();
           a_i <= $random%2;
           @(posedge clk);
         end
-    $finish();
+    end
+  endtask
+  
+  task rst;
+    reset <= 1'b1;
+    repeat(3) @(posedge clk);
+    reset <= 1'b0;
+  endtask
+  
+  task in_gen;
+    a_i <= 1'b1;
+    repeat(3) @(posedge clk);
+    a_i <= 1'b0;
+    repeat(3) @(posedge clk);
+    a_i <= 1'b1;
+    repeat(3) @(posedge clk);
+    a_i <= 1'b0;
+    repeat(3) @(posedge clk);
+  endtask
+  
+  initial
+    begin
+      fork
+        rst;
+        in_gen;
+      join
+      testcase1;
+      $finish;
     end
   
   initial
