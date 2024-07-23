@@ -60,8 +60,21 @@ module day15_tb ();
     $display("The number of grants for req6 are %d", cnt64);
     $display("The number of grants for req7 are %d", cnt128);
     $display("None requests were granted : %d", cnt);
+    //calling testcase1
+    testcase1();
     $finish();
   end
+  
+  //testcase1
+  task testcase1();
+    req_i <= (2 ** Requests) - 1;
+    repeat(Requests) 
+      begin
+        @(posedge clk);
+        $display("req_i = %b :: grant = %d", req_i, gnt_o);
+      end
+  endtask
+  
   
   initial
     begin
